@@ -6,172 +6,96 @@
   <title>Calculadora de Inspeção</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #7ed957; /* Verde */
+      font-family: 'Poppins', sans-serif;
+      background: #f4f6f9;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      margin: 0;
     }
-
     .container {
-      background: #0b2a63; /* Azul escuro */
-      color: white;
-      padding: 20px 30px;
-      border-radius: 10px;
-      width: 600px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      text-align: center;
+      background: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      width: 400px;
     }
-
     h2 {
+      text-align: center;
+      color: #2c3e50;
       margin-bottom: 20px;
-      font-size: 22px;
-      font-weight: bold;
     }
-
-    select, input {
-      width: 150px;
-      padding: 10px;
-      margin: 10px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-      text-align: center;
-    }
-
     label {
-      font-size: 14px;
-      font-weight: bold;
+      font-weight: 500;
       display: block;
-      margin-bottom: 5px;
-      color: #fff;
+      margin-top: 10px;
     }
-
-    .row {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin: 15px 0;
-    }
-
-    .card {
-      background: white;
-      color: black;
-      padding: 15px;
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
       border-radius: 8px;
-      text-align: center;
-      width: 150px;
+      border: 1px solid #ccc;
+      font-size: 14px;
     }
-
-    .resultado {
-      margin-top: 20px;
-      background: white;
-      color: black;
-      padding: 20px;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: bold;
-      min-height: 80px;
-    }
-
     button {
       margin-top: 15px;
-      padding: 12px 25px;
+      width: 100%;
+      padding: 12px;
       background: #3498db;
-      color: white;
+      color: #fff;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
+      cursor: pointer;
       font-size: 16px;
       font-weight: bold;
-      cursor: pointer;
       transition: background 0.3s;
     }
-
     button:hover {
-      background: #217dbb;
+      background: #2980b9;
+    }
+    .resultado {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      background: #ecf9f1;
+      border: 1px solid #2ecc71;
+      color: #27ae60;
+      font-weight: bold;
+      text-align: center;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>CALCULADORA DE INSPEÇÃO</h2>
+    <h2>Calculadora de Inspeção</h2>
+    <label>Quantidade de Peças na NF</label>
+    <input type="number" id="qtdNF" placeholder="Ex: 100">
 
-    <div>
-      <label for="categoria">CATEGORIA</label>
-      <select id="categoria">
-        <option value="vestuario">Vestuário</option>
-        <option value="calcados">Calçados</option>
-      </select>
-    </div>
+    <label>Quantidade de Códigos/Volumes</label>
+    <input type="number" id="qtdCodigos" placeholder="Ex: 3">
 
-    <div>
-      <label for="arredondamento">MODO DE ARREDONDAMENTO</label>
-      <select id="arredondamento">
-        <option value="normal">Normal</option>
-        <option value="cima">Arredondar para cima</option>
-        <option value="baixo">Arredondar para baixo</option>
-      </select>
-    </div>
+    <label>Porcentagem a Inspecionar (%)</label>
+    <input type="number" id="percentual" placeholder="Ex: 25">
 
-    <div class="row">
-      <div class="card">
-        <label>QNTD. DE PEÇAS</label>
-        <input type="number" id="qtdNF" placeholder="100">
-      </div>
-      <div class="card">
-        <label>QNTD. CÓDIGOS</label>
-        <input type="number" id="qtdCodigos" placeholder="3">
-      </div>
-      <div class="card">
-        <label>PORCENTAGEM</label>
-        <input type="number" id="percentual" placeholder="25">
-      </div>
-    </div>
+    <button onclick="calcular()">Calcular</button>
 
-    <button onclick="calcular()">CALCULAR</button>
-
-    <div id="resultado" class="resultado">
-      INFORMAÇÕES CALCULADAS
-    </div>
+    <div id="resultado" class="resultado" style="display:none;"></div>
   </div>
 
   <script>
     function calcular() {
-      const qtdNF = parseInt(document.getElementById('qtdNF').value) || 0;
-      const qtdCodigos = parseInt(document.getElementById('qtdCodigos').value) || 1;
-      const percentual = parseInt(document.getElementById('percentual').value) || 0;
-      const categoria = document.getElementById('categoria').value;
-      const arredondamento = document.getElementById('arredondamento').value;
+      const qtdNF = parseInt(document.getElementById('qtdNF').value);
+      const qtdCodigos = parseInt(document.getElementById('qtdCodigos').value);
+      const percentual = parseInt(document.getElementById('percentual').value);
 
-      let totalInspecionar = (qtdNF * percentual) / 100;
-      let porCodigo = totalInspecionar / qtdCodigos;
+      const totalInspecionar = Math.ceil((qtdNF * percentual) / 100);
+      const porCodigo = Math.ceil(totalInspecionar / qtdCodigos);
 
-      // Arredondamento
-      if (arredondamento === "cima") {
-        totalInspecionar = Math.ceil(totalInspecionar);
-        porCodigo = Math.ceil(porCodigo);
-      } else if (arredondamento === "baixo") {
-        totalInspecionar = Math.floor(totalInspecionar);
-        porCodigo = Math.floor(porCodigo);
-      } else {
-        totalInspecionar = Math.round(totalInspecionar);
-        porCodigo = Math.round(porCodigo);
-      }
-
-      let resultadoTexto = "";
-      if (categoria === "vestuario") {
-        resultadoTexto = `👕 Categoria: Vestuário<br>
-                          📦 Peças a inspecionar: <b>${totalInspecionar}</b><br>
-                          🔢 Por código: <b>${porCodigo}</b>`;
-      } else {
-        resultadoTexto = `👟 Categoria: Calçados<br>
-                          📦 Peças a inspecionar: <b>${totalInspecionar}</b><br>
-                          🔢 Por volume: <b>${porCodigo}</b>`;
-      }
-
-      document.getElementById("resultado").innerHTML = resultadoTexto;
+      document.getElementById('resultado').style.display = "block";
+      document.getElementById('resultado').innerHTML =
+        `📦 Peças a inspecionar: <b>${totalInspecionar}</b><br>
+         🔢 Por código/volume: <b>${porCodigo}</b>`;
     }
   </script>
 </body>
