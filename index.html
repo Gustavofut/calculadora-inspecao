@@ -1,110 +1,178 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Calculadora de Inspeção</title>
-<style>
-  body{font-family:system-ui,Segoe UI,Roboto,Arial;max-width:980px;margin:24px auto;padding:16px}
-  h1{font-size:20px;margin-bottom:6px}
-  .grid{display:flex;gap:18px;flex-wrap:wrap}
-  .card{flex:1 1 320px;border:1px solid #ddd;padding:14px;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,0.03)}
-  label{display:block;margin:8px 0;font-size:14px}
-  input[type=number]{width:120px;padding:6px;border-radius:6px;border:1px solid #bbb}
-  .out{margin-top:8px;font-weight:700}
-  .small{font-size:13px;color:#555}
-  .footer{margin-top:14px;font-size:13px;color:#444}
-  select{padding:6px;border-radius:6px;border:1px solid #bbb}
-  pre{background:#f7f7f7;padding:8px;border-radius:6px}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Inspeção</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #7ed957; /* Verde */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: #0b2a63; /* Azul escuro */
+      color: white;
+      padding: 20px 30px;
+      border-radius: 10px;
+      width: 600px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    select, input {
+      width: 150px;
+      padding: 10px;
+      margin: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      text-align: center;
+    }
+
+    label {
+      font-size: 14px;
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+      color: #fff;
+    }
+
+    .row {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin: 15px 0;
+    }
+
+    .card {
+      background: white;
+      color: black;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+      width: 150px;
+    }
+
+    .resultado {
+      margin-top: 20px;
+      background: white;
+      color: black;
+      padding: 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      min-height: 80px;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 12px 25px;
+      background: #3498db;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #217dbb;
+    }
+  </style>
 </head>
 <body>
-  <h1>Calculadora de Inspeção</h1>
-  <div class="small">Digite os valores; os resultados atualizam automaticamente. Escolha modo de arredondamento.</div>
+  <div class="container">
+    <h2>CALCULADORA DE INSPEÇÃO</h2>
 
-  <div style="margin:10px 0">
-    <label>Modo de arredondamento:
-      <select id="roundMode">
-        <option value="down">Arredondar para baixo (INT)</option>
-        <option value="nearest">Arredondar para o mais próximo</option>
-        <option value="up">Arredondar para cima (CEIL)</option>
+    <div>
+      <label for="categoria">CATEGORIA</label>
+      <select id="categoria">
+        <option value="vestuario">Vestuário</option>
+        <option value="calcados">Calçados</option>
       </select>
-    </label>
-  </div>
-
-  <div class="grid">
-    <div class="card" id="vestuario">
-      <h3>Vestuários</h3>
-      <label>Quantidade de peças na NF: <input id="v_nf" type="number" value="100" min="0"></label>
-      <label>Quantidade de códigos: <input id="v_codes" type="number" value="3" min="0"></label>
-      <label>Porcentagem a inspecionar (%) : <input id="v_pct" type="number" value="25" min="0"></label>
-
-      <div class="out">Peças a inspecionar total: <span id="v_total">0</span></div>
-      <div class="out">Peças a inspecionar por código (base): <span id="v_per">0</span></div>
-      <div class="small" id="v_dist"></div>
     </div>
 
-    <div class="card" id="calcados">
-      <h3>Calçados</h3>
-      <label>Quantidade de peças na NF: <input id="c_nf" type="number" value="100" min="0"></label>
-      <label>Quantidade de volumes: <input id="c_volumes" type="number" value="8" min="0"></label>
-      <label>Porcentagem a inspecionar (%) : <input id="c_pct" type="number" value="25" min="0"></label>
+    <div>
+      <label for="arredondamento">MODO DE ARREDONDAMENTO</label>
+      <select id="arredondamento">
+        <option value="normal">Normal</option>
+        <option value="cima">Arredondar para cima</option>
+        <option value="baixo">Arredondar para baixo</option>
+      </select>
+    </div>
 
-      <div class="out">Peças a inspecionar total: <span id="c_total">0</span></div>
-      <div class="out">Peças a inspecionar por volume (base): <span id="c_per">0</span></div>
-      <div class="small" id="c_dist"></div>
+    <div class="row">
+      <div class="card">
+        <label>QNTD. DE PEÇAS</label>
+        <input type="number" id="qtdNF" placeholder="100">
+      </div>
+      <div class="card">
+        <label>QNTD. CÓDIGOS</label>
+        <input type="number" id="qtdCodigos" placeholder="3">
+      </div>
+      <div class="card">
+        <label>PORCENTAGEM</label>
+        <input type="number" id="percentual" placeholder="25">
+      </div>
+    </div>
+
+    <button onclick="calcular()">CALCULAR</button>
+
+    <div id="resultado" class="resultado">
+      INFORMAÇÕES CALCULADAS
     </div>
   </div>
 
-  <div class="footer">
-    <strong>Nota:</strong> "por código" usa divisão inteira (tirando a parte decimal). A distribuição exata aparece abaixo quando houver resto.
-  </div>
+  <script>
+    function calcular() {
+      const qtdNF = parseInt(document.getElementById('qtdNF').value) || 0;
+      const qtdCodigos = parseInt(document.getElementById('qtdCodigos').value) || 1;
+      const percentual = parseInt(document.getElementById('percentual').value) || 0;
+      const categoria = document.getElementById('categoria').value;
+      const arredondamento = document.getElementById('arredondamento').value;
 
-<script>
-function pctToDecimal(p){ p = Number(p)||0; return (p>1? p/100 : p); }
+      let totalInspecionar = (qtdNF * percentual) / 100;
+      let porCodigo = totalInspecionar / qtdCodigos;
 
-function distribute(total, parts){
-  total = Math.max(0, Math.floor(total));
-  parts = Math.max(1, Math.floor(parts));
-  const base = Math.floor(total/parts);
-  const rem = total % parts;
-  const arr = Array.from({length:parts}, (_,i) => base + (i < rem ? 1 : 0));
-  return {base, rem, arr};
-}
+      // Arredondamento
+      if (arredondamento === "cima") {
+        totalInspecionar = Math.ceil(totalInspecionar);
+        porCodigo = Math.ceil(porCodigo);
+      } else if (arredondamento === "baixo") {
+        totalInspecionar = Math.floor(totalInspecionar);
+        porCodigo = Math.floor(porCodigo);
+      } else {
+        totalInspecionar = Math.round(totalInspecionar);
+        porCodigo = Math.round(porCodigo);
+      }
 
-function calcSection(prefix, nfId, partsId, pctId, totalId, perId, distId){
-  const nf = Number(document.getElementById(nfId).value) || 0;
-  const parts = Number(document.getElementById(partsId).value) || 0;
-  let pct = pctToDecimal(document.getElementById(pctId).value);
-  const rawTotal = nf * pct;
-  const mode = document.getElementById('roundMode').value;
-  let totalRounded;
-  if(mode === 'down') totalRounded = Math.floor(rawTotal);
-  else if(mode === 'up') totalRounded = Math.ceil(rawTotal);
-  else totalRounded = Math.round(rawTotal);
+      let resultadoTexto = "";
+      if (categoria === "vestuario") {
+        resultadoTexto = `👕 Categoria: Vestuário<br>
+                          📦 Peças a inspecionar: <b>${totalInspecionar}</b><br>
+                          🔢 Por código: <b>${porCodigo}</b>`;
+      } else {
+        resultadoTexto = `👟 Categoria: Calçados<br>
+                          📦 Peças a inspecionar: <b>${totalInspecionar}</b><br>
+                          🔢 Por volume: <b>${porCodigo}</b>`;
+      }
 
-  const perBase = parts>0 ? Math.floor(totalRounded / parts) : 0;
-  document.getElementById(totalId).innerText = totalRounded;
-  document.getElementById(perId).innerText = perBase;
-
-  // distribuição detalhada
-  if(parts > 0){
-    const d = distribute(totalRounded, parts);
-    document.getElementById(distId).innerText = d.rem > 0 
-      ? `Distribuição (primeiros ${d.rem} recebem +1): ${d.arr.join(', ')}`
-      : `Distribuição igual: ${d.arr.join(', ')}`;
-  } else {
-    document.getElementById(distId).innerText = '';
-  }
-}
-
-function calcAll(){
-  calcSection('v','v_nf','v_codes','v_pct','v_total','v_per','v_dist');
-  calcSection('c','c_nf','c_volumes','c_pct','c_total','c_per','c_dist');
-}
-
-document.querySelectorAll('input, select').forEach(el => el.addEventListener('input', calcAll));
-window.addEventListener('load', calcAll);
-</script>
+      document.getElementById("resultado").innerHTML = resultadoTexto;
+    }
+  </script>
 </body>
 </html>
