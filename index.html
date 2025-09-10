@@ -1,102 +1,110 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculadora de Inspeção</title>
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #f4f6f9;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    .container {
-      background: #fff;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      width: 400px;
-    }
-    h2 {
-      text-align: center;
-      color: #2c3e50;
-      margin-bottom: 20px;
-    }
-    label {
-      font-weight: 500;
-      display: block;
-      margin-top: 10px;
-    }
-    input {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 14px;
-    }
-    button {
-      margin-top: 15px;
-      width: 100%;
-      padding: 12px;
-      background: #3498db;
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 16px;
-      font-weight: bold;
-      transition: background 0.3s;
-    }
-    button:hover {
-      background: #2980b9;
-    }
-    .resultado {
-      margin-top: 20px;
-      padding: 15px;
-      border-radius: 10px;
-      background: #ecf9f1;
-      border: 1px solid #2ecc71;
-      color: #27ae60;
-      font-weight: bold;
-      text-align: center;
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Calculadora de Inspeção</title>
+<style>
+  body{font-family:system-ui,Segoe UI,Roboto,Arial;max-width:980px;margin:24px auto;padding:16px}
+  h1{font-size:20px;margin-bottom:6px}
+  .grid{display:flex;gap:18px;flex-wrap:wrap}
+  .card{flex:1 1 320px;border:1px solid #ddd;padding:14px;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,0.03)}
+  label{display:block;margin:8px 0;font-size:14px}
+  input[type=number]{width:120px;padding:6px;border-radius:6px;border:1px solid #bbb}
+  .out{margin-top:8px;font-weight:700}
+  .small{font-size:13px;color:#555}
+  .footer{margin-top:14px;font-size:13px;color:#444}
+  select{padding:6px;border-radius:6px;border:1px solid #bbb}
+  pre{background:#f7f7f7;padding:8px;border-radius:6px}
+</style>
 </head>
 <body>
-  <div class="container">
-    <h2>Calculadora de Inspeção</h2>
-    <label>Quantidade de Peças na NF</label>
-    <input type="number" id="qtdNF" placeholder="Ex: 100">
+  <h1>Calculadora de Inspeção</h1>
+  <div class="small">Digite os valores; os resultados atualizam automaticamente. Escolha modo de arredondamento.</div>
 
-    <label>Quantidade de Códigos/Volumes</label>
-    <input type="number" id="qtdCodigos" placeholder="Ex: 3">
-
-    <label>Porcentagem a Inspecionar (%)</label>
-    <input type="number" id="percentual" placeholder="Ex: 25">
-
-    <button onclick="calcular()">Calcular</button>
-
-    <div id="resultado" class="resultado" style="display:none;"></div>
+  <div style="margin:10px 0">
+    <label>Modo de arredondamento:
+      <select id="roundMode">
+        <option value="down">Arredondar para baixo (INT)</option>
+        <option value="nearest">Arredondar para o mais próximo</option>
+        <option value="up">Arredondar para cima (CEIL)</option>
+      </select>
+    </label>
   </div>
 
-  <script>
-    function calcular() {
-      const qtdNF = parseInt(document.getElementById('qtdNF').value);
-      const qtdCodigos = parseInt(document.getElementById('qtdCodigos').value);
-      const percentual = parseInt(document.getElementById('percentual').value);
+  <div class="grid">
+    <div class="card" id="vestuario">
+      <h3>Vestuários</h3>
+      <label>Quantidade de peças na NF: <input id="v_nf" type="number" value="100" min="0"></label>
+      <label>Quantidade de códigos: <input id="v_codes" type="number" value="3" min="0"></label>
+      <label>Porcentagem a inspecionar (%) : <input id="v_pct" type="number" value="25" min="0"></label>
 
-      const totalInspecionar = Math.ceil((qtdNF * percentual) / 100);
-      const porCodigo = Math.ceil(totalInspecionar / qtdCodigos);
+      <div class="out">Peças a inspecionar total: <span id="v_total">0</span></div>
+      <div class="out">Peças a inspecionar por código (base): <span id="v_per">0</span></div>
+      <div class="small" id="v_dist"></div>
+    </div>
 
-      document.getElementById('resultado').style.display = "block";
-      document.getElementById('resultado').innerHTML =
-        `📦 Peças a inspecionar: <b>${totalInspecionar}</b><br>
-         🔢 Por código/volume: <b>${porCodigo}</b>`;
-    }
-  </script>
+    <div class="card" id="calcados">
+      <h3>Calçados</h3>
+      <label>Quantidade de peças na NF: <input id="c_nf" type="number" value="100" min="0"></label>
+      <label>Quantidade de volumes: <input id="c_volumes" type="number" value="8" min="0"></label>
+      <label>Porcentagem a inspecionar (%) : <input id="c_pct" type="number" value="25" min="0"></label>
+
+      <div class="out">Peças a inspecionar total: <span id="c_total">0</span></div>
+      <div class="out">Peças a inspecionar por volume (base): <span id="c_per">0</span></div>
+      <div class="small" id="c_dist"></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <strong>Nota:</strong> "por código" usa divisão inteira (tirando a parte decimal). A distribuição exata aparece abaixo quando houver resto.
+  </div>
+
+<script>
+function pctToDecimal(p){ p = Number(p)||0; return (p>1? p/100 : p); }
+
+function distribute(total, parts){
+  total = Math.max(0, Math.floor(total));
+  parts = Math.max(1, Math.floor(parts));
+  const base = Math.floor(total/parts);
+  const rem = total % parts;
+  const arr = Array.from({length:parts}, (_,i) => base + (i < rem ? 1 : 0));
+  return {base, rem, arr};
+}
+
+function calcSection(prefix, nfId, partsId, pctId, totalId, perId, distId){
+  const nf = Number(document.getElementById(nfId).value) || 0;
+  const parts = Number(document.getElementById(partsId).value) || 0;
+  let pct = pctToDecimal(document.getElementById(pctId).value);
+  const rawTotal = nf * pct;
+  const mode = document.getElementById('roundMode').value;
+  let totalRounded;
+  if(mode === 'down') totalRounded = Math.floor(rawTotal);
+  else if(mode === 'up') totalRounded = Math.ceil(rawTotal);
+  else totalRounded = Math.round(rawTotal);
+
+  const perBase = parts>0 ? Math.floor(totalRounded / parts) : 0;
+  document.getElementById(totalId).innerText = totalRounded;
+  document.getElementById(perId).innerText = perBase;
+
+  // distribuição detalhada
+  if(parts > 0){
+    const d = distribute(totalRounded, parts);
+    document.getElementById(distId).innerText = d.rem > 0 
+      ? `Distribuição (primeiros ${d.rem} recebem +1): ${d.arr.join(', ')}`
+      : `Distribuição igual: ${d.arr.join(', ')}`;
+  } else {
+    document.getElementById(distId).innerText = '';
+  }
+}
+
+function calcAll(){
+  calcSection('v','v_nf','v_codes','v_pct','v_total','v_per','v_dist');
+  calcSection('c','c_nf','c_volumes','c_pct','c_total','c_per','c_dist');
+}
+
+document.querySelectorAll('input, select').forEach(el => el.addEventListener('input', calcAll));
+window.addEventListener('load', calcAll);
+</script>
 </body>
 </html>
