@@ -5,109 +5,215 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>CALCULADORA DE INSPEÇÃO</title>
 <style>
-  body{font-family:system-ui,Segoe UI,Roboto,Arial;max-width:980px;margin:24px auto;padding:16px}
-  h1{font-size:32px;text-align:center;margin-bottom:12px}
-  .grid{display:flex;gap:18px;flex-wrap:wrap}
-  .card{flex:1 1 320px;border:1px solid #ddd;padding:14px;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,0.03)}
-  label{display:block;margin:8px 0;font-size:14px}
-  input[type=number], input[type=date]{width:135px;padding:6px;border-radius:6px;border:1px solid #bbb}
-  .out{margin-top:8px;font-weight:700}
-  .small{font-size:13px;color:#555}
-  .footer{margin-top:14px;font-size:13px;color:#444}
-  select{padding:6px;border-radius:6px;border:1px solid #bbb}
-  pre{background:#f7f7f7;padding:8px;border-radius:6px}
+  * { box-sizing: border-box; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    margin: 0;
+    background-color: #f4f4f4;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza o conteúdo horizontalmente */
+    padding: 20px;
+  }
   
-  /* Estilos específicos para a caixa de data limite e os resultados visuais */
-  .info-box { background-color: #f0f8ff; border: 1px solid #cce0ff; padding: 10px; border-radius: 6px; margin-bottom: 12px; font-size: 14px; }
-  .result-box { margin-top: 12px; padding: 12px; border-radius: 6px; display: none; font-weight: bold; text-align: center; font-size: 14px; }
-  .status-green { background-color: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
-  .status-orange { background-color: #fff3e0; color: #e65100; border: 1px solid #ffcc80; }
-  .status-red { background-color: #ffebee; color: #c62828; border: 1px solid #ef9a9a; }
+  h1 { font-size: 1.5rem; margin: 0 0 20px 0; color: #222; }
   
-  footer { position: relative; text-align: center; padding: 20px 0; background-color: #f5f5f5; font-size: 14px; color: #333; margin-top: 20px;}
-  .logo-rodape { position: absolute; right: 10px; bottom: 5px; height: 25px; opacity: 0.2; }
+  /* Grid de cards mais estreito e centralizado */
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    max-width: 900px; /* Limita a expansão para não espalhar */
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    padding: 15px;
+    width: 280px; /* Cards menores e fixos */
+    border: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+  }
+
+  h3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin: 0 0 12px 0;
+    font-size: 0.95rem;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .field-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px; /* Informações mais próximas */
+  }
+  
+  label { font-size: 0.75rem; font-weight: 600; color: #666; }
+  
+  input {
+    width: 80px;
+    padding: 4px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 0.85rem;
+    text-align: center;
+  }
+
+  /* Resultados compactos */
+  .out-container {
+    margin-top: 10px;
+    border-top: 1px dashed #eee;
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .out-box {
+    background: #f9f9f9;
+    padding: 6px;
+    border-radius: 6px;
+    text-align: center;
+  }
+  
+  .out-label { font-size: 0.65rem; color: #888; text-transform: uppercase; }
+  .out-value { font-size: 1.2rem; font-weight: 800; color: #007bff; }
+
+  /* Suplementos Card */
+  .suplementos-card {
+    width: 100%; /* Ocupa a largura dos dois cards de cima */
+    max-width: 575px; 
+  }
+  
+  .info-box {
+    background-color: #fff9db;
+    border: 1px solid #ffec99;
+    padding: 8px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
+  }
+
+  .result-box {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 6px;
+    display: none;
+    font-weight: bold;
+    text-align: center;
+    font-size: 0.8rem;
+  }
+  
+  .status-green { background-color: #d4edda; color: #155724; }
+  .status-orange { background-color: #fff3cd; color: #856404; }
+  .status-red { background-color: #f8d7da; color: #721c24; }
+  
+  footer {
+    margin-top: 20px;
+    width: 100%;
+    max-width: 575px;
+    font-size: 0.7rem;
+    color: #999;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .logo-rodape { height: 18px; opacity: 0.2; }
 </style>
 </head>
 <body>
+
   <h1>CALCULADORA DE INSPEÇÃO</h1>
 
-  <div class="grid">
-    <div class="card" id="vestuario">
+  <div class="container">
+    <div class="card">
       <h3>👕 VESTUÁRIOS</h3>
-      <label>Quantidade de peças na NF: <input id="v_nf" type="number" value="" min="0"></label>
-      <label>Quantidade de códigos: <input id="v_codes" type="number" value="" min="0"></label>
-      <label>Porcentagem a inspecionar (%) : <input id="v_pct" type="number" value="25" min="0"></label>
-
-      <div class="out">Peças a inspecionar total: <span id="v_total">0</span></div>
-      <div class="out">Peças a inspecionar por código: <span id="v_per">0</span></div>
-      <div class="small" id="v_dist"></div>
-    </div>
-
-    <div class="card" id="calcados">
-      <h3>👟 CALÇADOS</h3>
-      <label>Quantidade de peças na NF: <input id="c_nf" type="number" value="" min="0"></label>
-      <label>Quantidade de volumes: <input id="c_volumes" type="number" value="" min="0"></label>
-      <label>Porcentagem a inspecionar (%) : <input id="c_pct" type="number" value="25" min="0"></label>
-
-      <div class="out">Peças a inspecionar total: <span id="c_total">0</span></div>
-      <div class="out">Peças a inspecionar por volume : <span id="c_per">0</span></div>
-      <div class="small" id="c_dist"></div>
-    </div>
-
-    <div class="card" id="suplementos">
-      <h3>💊 SUPLEMENTOS</h3>
-      
-      <div class="info-box">
-        <strong>Data de Hoje:</strong> <span id="s_hoje"></span><br>
-        <strong>Data Limite Mínima (8 meses):</strong> <span id="s_limite" style="color: #c62828;"></span>
-        <div class="small" style="margin-top:4px;">* Produtos com validade inferior a 8 meses reprovam. Margem de até 15 dias após os 8 meses requerem atenção comercial.</div>
+      <div class="field-group">
+        <label>Peças na NF</label>
+        <input id="v_nf" type="number" placeholder="0">
+      </div>
+      <div class="field-group">
+        <label>Total de Códigos</label>
+        <input id="v_codes" type="number" placeholder="0">
+      </div>
+      <div class="field-group">
+        <label>Amostragem %</label>
+        <input id="v_pct" type="number" value="30">
       </div>
 
-      <label style="font-weight:bold;">Consultar Validade do Produto: 
-        <input id="s_data_input" type="date">
-      </label>
+      <div class="out-container">
+        <div class="out-box">
+          <div class="out-label">Total a Inspecionar</div>
+          <div id="v_total" class="out-value">0</div>
+        </div>
+        <div class="out-box">
+          <div class="out-label">Por Código</div>
+          <div id="v_per" class="out-value">0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>👟 CALÇADOS</h3>
+      <div class="field-group">
+        <label>Peças na NF</label>
+        <input id="c_nf" type="number" placeholder="0">
+      </div>
+      <div class="field-group">
+        <label>Total de Volumes</label>
+        <input id="c_volumes" type="number" placeholder="0">
+      </div>
+      <div class="field-group">
+        <label>Amostragem %</label>
+        <input id="c_pct" type="number" value="30">
+      </div>
+
+      <div class="out-container">
+        <div class="out-box">
+          <div class="out-label">Total a Inspecionar</div>
+          <div id="c_total" class="out-value">0</div>
+        </div>
+        <div class="out-box">
+          <div class="out-label">Por Volume</div>
+          <div id="c_per" class="out-value">0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card suplementos-card">
+      <h3>💊 SUPLEMENTOS</h3>
+      <div class="info-box">
+        <div><strong>Hoje:</strong> <span id="s_hoje"></span></div>
+        <div><strong>Data Limite:</strong> <span id="s_limite" style="color: #d63031; font-weight: 800;"></span></div>
+        <div style="color: #c62828;">⚠️ Anterior ao limite = REPROVADA</div>
+      </div>
+
+      <div class="field-group" style="justify-content: center; gap: 15px;">
+        <label>Validade do Produto:</label>
+        <input id="s_data_input" type="date" style="width: 130px;">
+      </div>
 
       <div id="s_resultado" class="result-box"></div>
     </div>
+
+    <footer>
+      <span>© 2026 Futfanatics - Controle de Qualidade</span>
+      <img src="Futfantatics.jpg" alt="" class="logo-rodape">
+    </footer>
   </div>
 
 <script>
-// --- FUNÇÕES DE CÁLCULO GERAIS ---
-function pctToDecimal(p){ p = Number(p)||0; return (p>1? p/100 : p); }
-
-function distribute(total, parts){
-  total = Math.max(0, Math.floor(total));
-  parts = Math.max(1, Math.floor(parts));
-  const base = Math.floor(total/parts);
-  const rem = total % parts;
-  const arr = Array.from({length:parts}, (_,i) => base + (i < rem ? 1 : 0));
-  return {base, rem, arr};
-}
-
-function calcSection(prefix, nfId, partsId, pctId, totalId, perId, distId){
-  const nf = Number(document.getElementById(nfId).value) || 0;
-  const parts = Number(document.getElementById(partsId).value) || 0;
-  let pct = pctToDecimal(document.getElementById(pctId).value);
-  const rawTotal = nf * pct;
-  
-  // Arredondamento padrão matemático aplicado automaticamente
-  const totalRounded = Math.round(rawTotal);
-
-  const perBase = parts>0 ? Math.floor(totalRounded / parts) : 0;
-  document.getElementById(totalId).innerText = totalRounded;
-  document.getElementById(perId).innerText = perBase;
-
-  if(parts > 0){
-    const d = distribute(totalRounded, parts);
-    document.getElementById(distId).innerText = d.rem > 0 
-      ? `Distribuição (primeiros ${d.rem} recebem +1): ${d.arr.join(', ')}`
-      : `Distribuição igual: ${d.arr.join(', ')}`;
-  } else {
-    document.getElementById(distId).innerText = '';
-  }
-}
-
-// --- FUNÇÕES DE SUPLEMENTOS ---
 function formatLocal(date) {
   const d = String(date.getDate()).padStart(2, '0');
   const m = String(date.getMonth() + 1).padStart(2, '0');
@@ -115,15 +221,41 @@ function formatLocal(date) {
   return `${d}/${m}/${y}`;
 }
 
+function getDiffText(today, prodDate) {
+  let y = prodDate.getFullYear() - today.getFullYear();
+  let m = prodDate.getMonth() - today.getMonth();
+  let d = prodDate.getDate() - today.getDate();
+  if (d < 0) { 
+    m--; 
+    const lastDayPrevMonth = new Date(prodDate.getFullYear(), prodDate.getMonth(), 0).getDate();
+    d += lastDayPrevMonth; 
+  }
+  if (m < 0) { y--; m += 12; }
+  let res = [];
+  if (y > 0) res.push(`${y}a`);
+  if (m > 0) res.push(`${m}m`);
+  if (d > 0) res.push(`${d}d`);
+  return res.join(' ') || "0d";
+}
+
+function calcSection(nfId, partsId, pctId, totalId, perId){
+  const nf = Number(document.getElementById(nfId).value) || 0;
+  const parts = Number(document.getElementById(partsId).value) || 0;
+  let pctInput = Number(document.getElementById(pctId).value) || 0;
+  let pct = pctInput > 1 ? pctInput / 100 : pctInput;
+
+  const totalRounded = Math.ceil(nf * pct);
+  const perBase = parts > 0 ? Math.ceil(totalRounded / parts) : 0;
+
+  document.getElementById(totalId).innerText = totalRounded;
+  document.getElementById(perId).innerText = perBase;
+}
+
 function calcSuplementos() {
   const today = new Date();
   today.setHours(0,0,0,0); 
-
-  // Data Limite (exatamente 8 meses)
   const limitDate = new Date(today);
   limitDate.setMonth(limitDate.getMonth() + 8);
-
-  // Data de Alerta Laranja (8 meses + 15 dias)
   const warningDate = new Date(limitDate);
   warningDate.setDate(warningDate.getDate() + 15);
 
@@ -133,74 +265,39 @@ function calcSuplementos() {
   const inputVal = document.getElementById('s_data_input').value;
   const resDiv = document.getElementById('s_resultado');
 
-  if (!inputVal) {
-    resDiv.style.display = 'none';
-    return;
-  }
+  if (!inputVal) { resDiv.style.display = 'none'; return; }
 
   const [iy, im, id] = inputVal.split('-');
   const prodDate = new Date(iy, im - 1, id);
   prodDate.setHours(0,0,0,0);
 
   resDiv.style.display = 'block';
+  const diffText = getDiffText(today, prodDate);
 
   if (prodDate < today) {
     resDiv.className = 'result-box status-red';
-    resDiv.innerHTML = `⚠️ PRODUTO JÁ VENCIDO!<br>A data inserida é anterior ao dia de hoje.`;
-    return;
-  }
-
-  // Diferença em Anos, Meses e Dias
-  let y = prodDate.getFullYear() - today.getFullYear();
-  let m = prodDate.getMonth() - today.getMonth();
-  let d = prodDate.getDate() - today.getDate();
-
-  if (d < 0) {
-    m--;
-    const prevMonth = new Date(prodDate.getFullYear(), prodDate.getMonth(), 0);
-    d += prevMonth.getDate();
-  }
-  if (m < 0) {
-    y--;
-    m += 12;
-  }
-
-  let timeStrParts = [];
-  if (y > 0) timeStrParts.push(`${y} ano${y>1?'s':''}`);
-  if (m > 0) timeStrParts.push(`${m} mês${m>1?'es':''}`);
-  if (d > 0) timeStrParts.push(`${d} dia${d>1?'s':''}`);
-  let timeStr = timeStrParts.length > 0 ? timeStrParts.join(' e ') : 'Menos de 1 dia';
-
-  // Validação: Verde, Laranja ou Vermelho
-  if (prodDate > warningDate) {
-    // Acima de 8 meses e 15 dias
-    resDiv.className = 'result-box status-green';
-    resDiv.innerHTML = `🟢 O PRODUTO ESTÁ DENTRO DO LIMITE ESTABELECIDO<br><br>Vida útil restante:<br>${timeStr}`;
-  } else if (prodDate >= limitDate && prodDate <= warningDate) {
-    // Entre 8 meses exatos e 8 meses + 15 dias
-    resDiv.className = 'result-box status-orange';
-    resDiv.innerHTML = `🟠 ATENÇÃO: PRODUTO NA MARGEM LIMITE<br>Favor entrar em contato com o responsável comercial.<br><br>Vida útil restante:<br>${timeStr}`;
-  } else {
-    // Abaixo de 8 meses
+    resDiv.innerHTML = `❌ VENCIDO`;
+  } else if (prodDate < limitDate) {
     resDiv.className = 'result-box status-red';
-    resDiv.innerHTML = `🔴 O PRODUTO ESTÁ FORA DO LIMITE ESTABELECIDO<br><br>Vida útil restante:<br>${timeStr}`;
+    resDiv.innerHTML = `🔴 REPROVADO (${diffText})`;
+  } else if (prodDate >= limitDate && prodDate <= warningDate) {
+    resDiv.className = 'result-box status-orange';
+    resDiv.innerHTML = `🟠 CONTATE O COMERCIAL (${diffText})`;
+  } else {
+    resDiv.className = 'result-box status-green';
+    resDiv.innerHTML = `🟢 APROVADO (${diffText})`;
   }
 }
 
 function calcAll(){
-  calcSection('v','v_nf','v_codes','v_pct','v_total','v_per','v_dist');
-  calcSection('c','c_nf','c_volumes','c_pct','c_total','c_per','c_dist');
+  calcSection('v_nf','v_codes','v_pct','v_total','v_per');
+  calcSection('c_nf','c_volumes','c_pct','c_total','c_per');
   calcSuplementos();
 }
 
 document.querySelectorAll('input').forEach(el => el.addEventListener('input', calcAll));
 window.addEventListener('load', calcAll);
 </script>
-
-<footer>
-  <p>© 2026 Futfanatics (Controle de qualidade).</p>
-  <img src="Futfantatics.jpg" alt="" class="logo-rodape">
-</footer>
 
 </body>
 </html>
